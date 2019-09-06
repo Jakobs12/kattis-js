@@ -1,5 +1,4 @@
 const readline = require('readline');
-//var UnionFind = require('union-find');
 
 const rl = readline.createInterface({
     input: process.stdin,
@@ -38,9 +37,11 @@ rl.on("close", () => {
     // Only run through second last line?
     for(let i = 0; i < rows; i++) {
         for(let j = 0; j < cols; j++) {
+           let colIndex = i % 2 == 0 ? (j-1) : j;
+
             let currentIndex =  calculateNumberPos(i, cols, j);
-            let belowLeft = calculateNumberPos(i+1, cols, j-1);
-            let belowRight = calculateNumberPos(i+1, cols, j);
+            let belowLeft = calculateNumberPos(i+1, cols, colIndex);
+            let belowRight = calculateNumberPos(i+1, cols, colIndex+1);
 
             if(arr[i][j] == '#') {
                 continue;
@@ -48,14 +49,16 @@ rl.on("close", () => {
                 map[currentIndex] = dots;
                 dots++;
             }
-            if(i != (rows-1) && j != 0 && arr[i+1][j-1] == '.') 
+
+            // If we're at an even number, we need to check -1 to 0,
+            // If we're at an odd number, we need to check 0 and 1;
+            
+
+            if(i != (rows-1) && arr[i+1][colIndex] == '.') 
                 edges.push([currentIndex,belowLeft])
             
-            if(i != (rows-1) && arr[i+1][j] == '.')
+            if(i != (rows-1) && arr[i+1][colIndex+1] == '.')
                 edges.push([currentIndex,belowRight])
-            
-            if(arr[i][j-1] != null && arr[i][j-1] == '.')
-                edges.push([currentIndex,calculateNumberPos(i, cols, j-1)])
 
             if(arr[i][j+1] != null && arr[i][j+1] == '.')
                 edges.push([currentIndex,calculateNumberPos(i, cols, j+1)])
@@ -89,8 +92,6 @@ rl.on("close", () => {
     countArr = countArr.sort((a,b) => b-a)
 
     let honeyDistributionService = 0;
-    
-    
 
     while(honey > 0) {
         honey = honey - countArr[honeyDistributionService];
@@ -119,7 +120,7 @@ function UnionFind(count) {
       this.roots[i] = i;
       this.ranks[i] = 0;
     }
-  }
+}
   
   var proto = UnionFind.prototype
   
@@ -127,14 +128,14 @@ function UnionFind(count) {
     "get": function() {
       return this.roots.length
     }
-  })
+})
   
   proto.makeSet = function() {
     var n = this.roots.length;
     this.roots.push(n);
     this.ranks.push(0);
     return n;
-  }
+}
   
   proto.find = function(x) {
     var x0 = x
@@ -148,7 +149,7 @@ function UnionFind(count) {
       x0 = y
     }
     return x;
-  }
+}
   
   proto.link = function(x, y) {
     var xr = this.find(x)
@@ -168,32 +169,7 @@ function UnionFind(count) {
       roots[yr] = xr;
       ++ranks[xr];
     }
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-if(hours.getValue() < 10)
-    string = "0";
-
-string = string + detNye;
-
-
-
-
-
-
-
-
-
+}
 
 
 
