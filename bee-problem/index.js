@@ -49,10 +49,8 @@ rl.on("close", () => {
                 map[currentIndex] = dots;
                 dots++;
             }
-
             // If we're at an even number, we need to check -1 to 0,
             // If we're at an odd number, we need to check 0 and 1;
-            
 
             if(i != (rows-1) && arr[i+1][colIndex] == '.') 
                 edges.push([currentIndex,belowLeft])
@@ -66,8 +64,6 @@ rl.on("close", () => {
     }
 
     var newEdges = edges.map(mapToVertexNumbers);
-
-    
 
     // UNION FIND
     var VERTEX_COUNT = dots;
@@ -92,17 +88,15 @@ rl.on("close", () => {
     countArr = countArr.sort((a,b) => b-a)
 
     let honeyDistributionService = 0;
-
     while(honey > 0) {
         honey = honey - countArr[honeyDistributionService];
         honeyDistributionService++;
     }
-    console.log(honeyDistributionService)
 
+    console.log(honeyDistributionService)
 })
 
-function mapToVertexNumbers(innerEdgeArr
-    ) {
+function mapToVertexNumbers(innerEdgeArr) {
     return [map[innerEdgeArr[0]], map[innerEdgeArr[1]]];
 }
 
