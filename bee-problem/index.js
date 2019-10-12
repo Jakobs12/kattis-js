@@ -1,5 +1,5 @@
 const readline = require('readline');
-//var UnionFind = require('union-find');
+
 
 const rl = readline.createInterface({
     input: process.stdin,
@@ -34,13 +34,19 @@ var map = {};
 
 rl.on("close", () => {
 
+    findSolution();
 
+})
+
+function findSolution() {
     // Only run through second last line?
     for(let i = 0; i < rows; i++) {
         for(let j = 0; j < cols; j++) {
+            let leftIndex = i % 2 == 0 ? j-1 : j;
+
             let currentIndex =  calculateNumberPos(i, cols, j);
-            let belowLeft = calculateNumberPos(i+1, cols, j-1);
-            let belowRight = calculateNumberPos(i+1, cols, j);
+            let belowLeft = calculateNumberPos(i+1, cols, leftIndex);
+            let belowRight = calculateNumberPos(i+1, cols, leftIndex+1);
 
             if(arr[i][j] == '#') {
                 continue;
@@ -48,23 +54,28 @@ rl.on("close", () => {
                 map[currentIndex] = dots;
                 dots++;
             }
-            if(i != (rows-1) && j != 0 && arr[i+1][j-1] == '.') 
-                edges.push([currentIndex,belowLeft])
-            
-            if(i != (rows-1) && arr[i+1][j] == '.')
-                edges.push([currentIndex,belowRight])
-            
-            if(arr[i][j-1] != null && arr[i][j-1] == '.')
-                edges.push([currentIndex,calculateNumberPos(i, cols, j-1)])
 
-            if(arr[i][j+1] != null && arr[i][j+1] == '.')
+            if(i % 2 == 0) {
+                if(i != (rows-1) && j != 0 && arr[i+1][leftIndex] == '.') 
+                    edges.push([currentIndex,belowLeft])
+                
+                if(i != (rows-1) && arr[i+1][leftIndex+1] == '.')
+                    edges.push([currentIndex,belowRight])
+
+            } else {
+                if(i != (rows-1) && arr[i+1][leftIndex] == '.') 
+                    edges.push([currentIndex,belowLeft])
+                
+                if(i != (rows-1) && j != (cols-1) && arr[i+1][leftIndex+1] == '.')
+                    edges.push([currentIndex,belowRight])
+            }
+
+            if(j != (cols-1) && arr[i][j+1] == '.')
                 edges.push([currentIndex,calculateNumberPos(i, cols, j+1)])
         }
     }
 
     var newEdges = edges.map(mapToVertexNumbers);
-
-    
 
     // UNION FIND
     var VERTEX_COUNT = dots;
@@ -90,18 +101,21 @@ rl.on("close", () => {
 
     let honeyDistributionService = 0;
     
-    
-
+    /*countArr.forEach(v => {
+        if(honey > 0) {
+            honey -= v;
+            honeyDistributionService++;
+        }
+    })*/
     while(honey > 0) {
-        honey = honey - countArr[honeyDistributionService];
+        honey -= countArr[honeyDistributionService];
         honeyDistributionService++;
     }
+
     console.log(honeyDistributionService)
+}
 
-})
-
-function mapToVertexNumbers(innerEdgeArr
-    ) {
+function mapToVertexNumbers(innerEdgeArr) {
     return [map[innerEdgeArr[0]], map[innerEdgeArr[1]]];
 }
 
@@ -169,34 +183,3 @@ function UnionFind(count) {
       ++ranks[xr];
     }
   }
-
-
-
-
-
-
-
-
-
-
-
-
-if(hours.getValue() < 10)
-    string = "0";
-
-string = string + detNye;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
