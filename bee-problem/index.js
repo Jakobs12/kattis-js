@@ -1,6 +1,5 @@
 const readline = require('readline');
 
-
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
@@ -133,7 +132,7 @@ function UnionFind(count) {
       this.roots[i] = i;
       this.ranks[i] = 0;
     }
-  }
+}
   
   var proto = UnionFind.prototype
   
@@ -141,14 +140,14 @@ function UnionFind(count) {
     "get": function() {
       return this.roots.length
     }
-  })
+})
   
   proto.makeSet = function() {
     var n = this.roots.length;
     this.roots.push(n);
     this.ranks.push(0);
     return n;
-  }
+}
   
   proto.find = function(x) {
     var x0 = x
@@ -162,7 +161,7 @@ function UnionFind(count) {
       x0 = y
     }
     return x;
-  }
+}
   
   proto.link = function(x, y) {
     var xr = this.find(x)
